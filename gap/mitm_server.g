@@ -25,6 +25,26 @@ InstallSCSCPprocedure( "EvaluateOpenMath", IdFunc );
 
 #############################################################################
 #
+# Generic procedure to evaluate GAP command and return back the OpenMath 
+# object produced with MitM_OM .
+#
+GAPtoOpenMath:=function( string )
+local stream, result;
+if not IsString( string ) then
+  Error("The argument must be a string");
+fi;
+if not string[Length(string)] = ';' then
+  Add( string, ';');
+fi;
+stream := InputTextString(string);
+result := READ_COMMAND_REAL(stream, true);
+return OMPlainString( MitM_OM( result[2] ) );
+end;
+
+InstallSCSCPprocedure( "GAPtoOpenMath", GAPtoOpenMath );
+
+#############################################################################
+#
 # Generic procedures for conversions between GAP code and OpenMath
 #
 #############################################################################
